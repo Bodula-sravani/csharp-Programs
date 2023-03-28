@@ -4,7 +4,7 @@ namespace Programs
 {
     internal class Program
     {
-        public static void spiralMatrix(int[,] a)
+        public void spiralMatrix(int[,] a)
         {
             int m = a.GetLength(0);
             int n = a.GetLength(1);
@@ -43,7 +43,7 @@ namespace Programs
             }
         }
 
-        public static int stock(int[] price)
+        public int stock(int[] price)
         {
             int maxProfit = 0;
             int Buyday = -1;
@@ -65,13 +65,6 @@ namespace Programs
             Console.WriteLine($"buying day: {Buyday} selling day: {Sellday}");
             return maxProfit;
         }
-        static void Main(string[] args)
-        {
-            int[,] a = { { 1, 2, 3 }, { 4, 5, 6 }, { 7,8,9 } } ;
-            spiralMatrix(a);
-            int[] price = { 7, 1, 5, 3, 6, 4 };
-            Console.WriteLine($"Max profit {stock(price)}");      
-            
-        }
+        
     }
 }
