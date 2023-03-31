@@ -27,14 +27,33 @@ namespace Programs
             c.operation();*/
 
             //Lucky number
+            /*
+                        Console.WriteLine("Enter your DOB in format YYYY-MM-DD to predict your lucky number");
+                        int[] tempDate = Array.ConvertAll(Console.ReadLine().Trim().Split('-').ToArray(), int.Parse);
+                        DateTime dob = new DateTime(tempDate[0], tempDate[1], tempDate[2]);
 
-            Console.WriteLine("Enter your DOB in format YYYY-MM-DD to predict your lucky number");
-            int[] tempDate = Array.ConvertAll(Console.ReadLine().Trim().Split('-').ToArray(), int.Parse);
-            DateTime dob = new DateTime(tempDate[0], tempDate[1], tempDate[2]);
+                        LuckyNumberPredictor LNP = new LuckyNumberPredictor(dob);
 
-            LuckyNumberPredictor LNP = new LuckyNumberPredictor(dob);
+                        Console.WriteLine($"Your lucky number is {LNP.luckyNumber}");*/
 
-            Console.WriteLine($"Your lucky number is {LNP.luckyNumber}");
+
+            //event async 
+
+            AsyncEvent e = new();
+            e.prizeDistribute();
+            e.chiefguestArrival();
+            e.distributeFood();
+            Console.ReadLine();
+
+            /*//Pay calculator 
+            payCalculator p = new();
+
+            p.overtimePay(9, 17, 30, 1.5f);
+
+            p.overtimePay(16, 18, 30, 1.8f);
+
+            p.overtimePay(13.25f, 15, 30, 1.5f);*/
+
 
 
         }
