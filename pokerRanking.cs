@@ -9,15 +9,17 @@ namespace Programs
 
     public class Card
     {
+        // Creating a card class to store the rank and suit in each object
         public int rank;
         public string suit;
 
-
         public Card(string s)
         {
+            //  Breaking up the string to rank and suit
             suit = s.Substring(s.Length - 1);
             string temp = s.Substring(0, s.Length - 1);
             
+            // converting the face cards to numbered ranks
             if (temp == "A")
             {
                 rank = 14;
@@ -38,42 +40,37 @@ namespace Programs
             {
                 rank = Convert.ToInt32(temp);
             }
-
         }
-
-
     }
-    public class pokerRanking
+    public class PokerCards
     {
         public List<Card> cards = new List<Card>();
-        public List<char> suits = new List<char>() { 'c', 'h', 's', 'd' };
         public int[] cardRanks = new int[15];
-
-
-        public void sortRank(List<Card> cards1)
+        public void SortRanks()
         {
-            cards1.Sort((x1, x2) => x1.rank.CompareTo(x2.rank));
-            //return cards1;
+            // This function is used sort the ranks - used further in sequencing
+            cards.Sort((x1, x2) => x1.rank.CompareTo(x2.rank));
         }
 
-        public bool sameSuits(List<Card> cards1)
+        public bool SameSuits()
         {
-
-            return (cards1.All(x => x.suit == cards1[0].suit));
-
-        }
-        public bool sameRanks(List<Card> cards1)
-        {
-            return (cards1.All(x => x.rank == cards1[0].rank));
+            // This function check if the suits of given cards are same
+            return (cards.All(x => x.suit == cards[0].suit));
         }
 
-
-        public bool sequence(List<Card> cards1)
+        public bool SameRanks()
         {
-            sortRank(cards1);
-            for(int i=0;i<cards1.Count-1;i++)
+            // This function check all ranks are same
+            return (cards.All(x => x.rank == cards[0].rank));
+        }
+
+        public bool Sequence()
+        {
+            // This function used to check Sequence by sorting the ranks first
+            SortRanks();
+            for(int i=0;i<cards.Count-1;i++)
             {
-                if (cards1[i].rank + 1!= cards1[i+1].rank)
+                if (cards[i].rank + 1!= cards[i+1].rank)
                 {
                     return false;
                 }
@@ -81,107 +78,101 @@ namespace Programs
             return true;
         }
 
-        public bool straightFlush()
+        public void GetRanks()
         {
-            return sequence(cards) && sameSuits(cards);
-        }
-        public bool royalFlush()
-        {
-            return sequence(cards) && cards.ElementAt(0).rank == 10 && sameSuits(cards);
-        }
-        public void getRanks()
-        {
-            foreach(var card in cards)
+            // This function used to store the ranks and their count in that respective rank index
+            foreach (var card in cards)
             {
                 cardRanks[card.rank] += 1;
             }
-            foreach(int i in cardRanks)
-            {
-                Console.WriteLine(i);
-            }
         }
-        public bool nOfaKind(int count)
+        public bool NOfaKind(int count)
         {
-            //getRanks();
+            // Takes input count and check if count no of cards or of same kind using ranks
             return Array.Exists(cardRanks, x => x >= count);
         }
-        public bool twoPairs()
+        public bool TwoPairs()
         {
-            //getRanks();
+            // Checks if there are two different paris using cardRanks
             return Array.FindAll(cardRanks, x => x >= 2).Length == 2;
         }
-        public bool fullHouse()
+        public bool FullHouse()
         {
+            // Checks if there are two diffrent kinds of pairs 
             return Array.Exists(cardRanks, x => x == 3) && Array.Exists(cardRanks, x => x ==2); ;
         }
-        public void pokerHandRanking()
+        public void PokerHandRanking()
         {
-                  bool anyCondition = false;
-                  if(royalFlush())
-                    {
-                        anyCondition = true;
-                        Console.WriteLine("Royal Flush");
-                    }
-                  if(straightFlush())
-                    {
-                        anyCondition = true;
-                        Console.WriteLine("Straight Flush");
-                    }
-                  if(nOfaKind(4))
-                    {
-                        anyCondition = true;
-                        Console.WriteLine("four of a kind");
-                    }
-                  if(nOfaKind(3))
-                    {
-                        anyCondition = true;
-                        Console.WriteLine("three of a kind");
-                    }
-                  if(fullHouse())
-                    {
-                         anyCondition = true;
-                        Console.WriteLine("Full house");
-                    }
-                  if(nOfaKind(2))
-                    {
-                        anyCondition = true;
-                        Console.WriteLine("Pair");
-                    }
-                 if(!sequence(cards) && sameSuits(cards))
-                    {
-                        anyCondition = true;
-                        Console.WriteLine("Flush");
-                    }
-                  if (sequence(cards) && !sameSuits(cards))
-                    {
-                        anyCondition = true;
-                        Console.WriteLine("Straight");
-                    }
-                  if(twoPairs())
-                    {
-                     anyCondition = true;
-                    Console.WriteLine("Two different pair");
-                    }
-                if(!anyCondition)
-                {
-                    Console.WriteLine("High card");
-                }
+            // checks all the conditions and prints the results
+            bool anyCondition = false;
+            if (Sequence() && cards.ElementAt(0).rank == 10 && SameSuits())
+            {
+                anyCondition = true;
+                Console.WriteLine("Royal Flush");
+            }
+            if (Sequence() && SameSuits())
+            {
+                anyCondition = true;
+                Console.WriteLine("Straight Flush");
+            }
+            if(NOfaKind(4))
+            {
+                anyCondition = true;
+                Console.WriteLine("four of a kind");
+            }
+            if(NOfaKind(3))
+            {
+                anyCondition = true;
+                Console.WriteLine("three of a kind");
+            }
+            if(FullHouse())
+            {
+                anyCondition = true;
+                Console.WriteLine("Full house");
+            }
+            if(NOfaKind(2))
+            {
+                anyCondition = true;
+                Console.WriteLine("Pair");
+            }
+            if(!Sequence() && SameSuits())
+            {
+                anyCondition = true;
+                Console.WriteLine("Flush");
+            }
+            if (Sequence() && !SameSuits())
+            {
+                anyCondition = true;
+                Console.WriteLine("Straight");
+            }
+            if(TwoPairs())
+            {
+                anyCondition = true;
+            Console.WriteLine("Two different pair");
+            }
+            if(!anyCondition)
+            {
+                Console.WriteLine("High card");
+            }
 
         }
         public static void Main()
         {
-            pokerRanking p = new();
-            //Console.WriteLine("Enter 5 cards by giving spaces");
-            //string[] cardInput = Console.ReadLine().Split(' ');
-            string[] cardInput = { "6s", "6h", "6d", "Kc", "Kh" };//{ "10s", "10c", "8d", "10d", "10h" };// { "3h", "5h", "Qs", "9h", "Ad" };//{ "10h", "Jh", "Qh", "Ah", "Kh" };
+            PokerCards p = new();
+
+            //user defined input 
+            Console.WriteLine("Enter 5 cards by giving spaces");
+            string[] cardUserInput = Console.ReadLine().Split(' ');
+            string[] cardInput = { "10s", "10c", "8d", "10d", "10h" };//{ "6s", "6h", "6d", "Kc", "Kh" };
+            // { "3h", "5h", "Qs", "9h", "Ad" };//{ "10h", "Jh", "Qh", "Ah", "Kh" };
             foreach (string card in cardInput)
             {
                 Card temp = new Card(card);
                 p.cards.Add(temp);
             }
-            p.getRanks();
-            //Console.WriteLine(p.cards.Count);
-            p.pokerHandRanking();
+            
+            p.GetRanks();              // Initializes the cardRanks list - increments the respective rank
+            p.PokerHandRanking();
         }
     }
 }
